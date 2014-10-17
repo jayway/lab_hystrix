@@ -5,11 +5,13 @@ import com.jayway.hystrixlab.http.TodoResource;
 import com.jayway.hystrixlab.repository.TodoRepository;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
+import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
@@ -82,11 +84,15 @@ public class Boot {
             ResourceConfig resourceConfig = new ResourceConfig();
             resourceConfig.register(new TodoResource(todoRepository));
             resourceConfig.register(new GlobalExceptionMapper());
+            resourceConfig.register(JacksonFeature.class);
 
-            ServletContextHandler externalContext = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
+            ServletContextHandler ctx = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
             ServletHolder servletHolder = new ServletHolder(new ServletContainer(resourceConfig));
-            externalContext.addServlet(servletHolder, "/*");
-            return externalContext;
+            ctx.addServlet(servletHolder, "/*");
+
+            ServletHolder hystrixHolder = new ServletHolder(new HystrixMetricsStreamServlet());
+            ctx.addServlet(hystrixHolder, "/hystrix.stream");
+            return ctx;
 
         }
 

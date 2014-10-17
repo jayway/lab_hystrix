@@ -4,6 +4,8 @@ import com.jayway.hystrixlab.repository.TodoRepository;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,6 +20,7 @@ import static com.jayway.hystrixlab.http.TodoResource.CommandKey.*;
 @Path("/todos")
 @Produces(MediaType.APPLICATION_JSON)
 public class TodoResource {
+    private static final Logger log = LoggerFactory.getLogger(TodoResource.class);
 
     private final TodoRepository todoRepository;
 
@@ -27,6 +30,7 @@ public class TodoResource {
 
     @POST
     public Map<String, Object> create(@FormParam("todo") String todo) throws Exception {
+        log.trace("Creating todo: {}", todo);
         return new MongoHystrixCommand<Map<String, Object>>(CREATE,
                 () -> todoRepository.create(new HashMap<String, Object>() {{
                     put("todo", todo);
@@ -36,14 +40,14 @@ public class TodoResource {
     @GET
     @Path("/{id}")
     public Map<String, Object> findById(@PathParam("id") String id) throws Exception {
-        return new MongoHystrixCommand<Map<String, Object>>(FIND_BY_ID,
-                () -> todoRepository.findById(id),
-                Collections::emptyMap).run();
+        log.trace("Finding todo with id ", id);
+        return new MongoHystrixCommand<Map<String, Object>>(FIND_BY_ID, () -> todoRepository.findById(id), Collections::emptyMap).run();
     }
 
     @DELETE
     @Path("/{id}")
     public void delete(@PathParam("id") String id) throws Exception {
+        log.trace("Deleting todo with id ", id);
         new MongoHystrixCommand<Void>(DELETE, () -> {
             todoRepository.delete(id);
             return null;
@@ -51,10 +55,10 @@ public class TodoResource {
     }
 
     @GET
-    public List<Map<String, Object>> findAll() {
-        return todoRepository.findAll();
+    public List<Map<String, Object>> findAll() throws Exception {
+        log.trace("Finding all todos");
+        return new MongoHystrixCommand<List<Map<String, Object>>>(FIND_ALL, todoRepository::findAll, Collections::emptyList).run();
     }
-
 
     enum CommandKey {
         CREATE, FIND_BY_ID, DELETE, FIND_ALL
@@ -62,6 +66,7 @@ public class TodoResource {
 
     static class MongoHystrixCommand<T> extends HystrixCommand<T> {
         private static final String GROUP_KEY = "todos-mongodb";
+
         private final Supplier<T> command;
         private final Supplier<T> fallback;
 
