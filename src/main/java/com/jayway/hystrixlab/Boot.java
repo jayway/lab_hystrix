@@ -31,7 +31,6 @@ public class Boot {
         }
     }
 
-
     public static class HystrixLabServer {
         private final Server server;
         private final TodoRepository todoRepository;

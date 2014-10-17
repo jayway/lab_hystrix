@@ -10,6 +10,8 @@ import static org.hamcrest.Matchers.*;
 
 public class TodoResourceTest {
 
+    private static final int TEST_TIMEOUT = 10000;
+
     @ClassRule
     public static HystrixLabServerRule hystrixLabServer = new HystrixLabServerRule();
 
@@ -38,7 +40,7 @@ public class TodoResourceTest {
         todoRepository.clear();
     }
 
-    @Test(timeout = 2000) public void
+    @Test(timeout = TEST_TIMEOUT) public void
     create_todo_returns_id_and_todo() {
         given().
                 formParam("todo", "Implement Hystrix Lab").
@@ -49,14 +51,14 @@ public class TodoResourceTest {
                 body("todo", equalTo("Implement Hystrix Lab"));
     }
 
-    @Test(timeout = 2000) public void
+    @Test(timeout = TEST_TIMEOUT) public void
     create_todo_stores_todo_in_mongo() {
         String todoId = given().formParam("todo", "Implement Hystrix Lab").when().post().then().extract().path("_id");
 
         assertThat(todoRepository.hasTodo(todoId)).isTrue();
     }
 
-    @Test(timeout = 2000) public void
+    @Test(timeout = TEST_TIMEOUT) public void
     delete_todo_removes_todo_from_repository() {
         // Given
         String todoId = given().formParam("todo", "Implement Hystrix Lab").when().post().then().extract().path("_id");
@@ -68,7 +70,7 @@ public class TodoResourceTest {
         assertThat(todoRepository.hasTodo(todoId)).isFalse();
     }
 
-    @Test(timeout = 2000) public void
+    @Test(timeout = TEST_TIMEOUT) public void
     find_todo_retrieves_the_todo() {
         // Given
         String todoId = given().formParam("todo", "Implement Hystrix Lab").when().post().then().extract().path("_id");
@@ -81,7 +83,7 @@ public class TodoResourceTest {
                 body("todo", equalTo("Implement Hystrix Lab"));
     }
 
-    @Test(timeout = 2000) public void
+    @Test(timeout = TEST_TIMEOUT) public void
     find_all_todos_retrieves_all_todos() {
         // Given
         String todoId1 = given().formParam("todo", "Implement Hystrix Lab").when().post().then().extract().path("_id");
