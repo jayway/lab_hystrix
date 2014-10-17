@@ -4,6 +4,7 @@ import com.jayway.hystrixlab.http.GlobalExceptionMapper;
 import com.jayway.hystrixlab.http.TodoResource;
 import com.jayway.hystrixlab.repository.TodoRepository;
 import com.mongodb.DB;
+import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 import org.eclipse.jetty.server.Server;
@@ -39,13 +40,17 @@ public class Boot {
 
         public HystrixLabServer(int port) {
             this.server = new Server(port);
+            todoRepository = new TodoRepository(initializeTodoCollection());
+        }
+
+        public static DBCollection initializeTodoCollection() {
             DB mongoDB;
             try {
                 mongoDB = new MongoClient("localhost").getDB("hystrixLab");
             } catch (UnknownHostException e) {
                 throw new RuntimeException(e);
             }
-            todoRepository = new TodoRepository(mongoDB.getCollection("todos"));
+            return mongoDB.getCollection("todos");
         }
 
         public int getPort() {

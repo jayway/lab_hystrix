@@ -5,7 +5,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.jayway.hystrixlab" level="DEBUG">
+    <logger name="com.jayway.hystrixlab" level="TRACE">
         <appender-ref ref="STDOUT"/>
     </logger>
 

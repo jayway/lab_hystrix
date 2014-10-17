@@ -40,14 +40,14 @@ public class TodoResource {
     @GET
     @Path("/{id}")
     public Map<String, Object> findById(@PathParam("id") String id) throws Exception {
-        log.trace("Finding todo with id ", id);
+        log.trace("Finding todo with id {}", id);
         return new MongoHystrixCommand<Map<String, Object>>(FIND_BY_ID, () -> todoRepository.findById(id), Collections::emptyMap).run();
     }
 
     @DELETE
     @Path("/{id}")
     public void delete(@PathParam("id") String id) throws Exception {
-        log.trace("Deleting todo with id ", id);
+        log.trace("Deleting todo with id {}", id);
         new MongoHystrixCommand<Void>(DELETE, () -> {
             todoRepository.delete(id);
             return null;
