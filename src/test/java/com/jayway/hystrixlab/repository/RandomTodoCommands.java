@@ -6,6 +6,8 @@ import com.jayway.restassured.filter.log.LogDetail;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +17,7 @@ import static com.jayway.restassured.RestAssured.delete;
 import static com.jayway.restassured.RestAssured.with;
 
 public class RandomTodoCommands {
+    private static final Logger log = LoggerFactory.getLogger(RandomTodoCommands.class);
 
     private static final Map<Integer, Runnable> commands = new HashMap<Integer, Runnable>() {{
         RestAssured.basePath = "/todos";
@@ -27,10 +30,15 @@ public class RandomTodoCommands {
     }};
 
     public static void main(String[] args) throws InterruptedException {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> initializeTodoCollection().drop()));
+        Runtime.getRuntime().addShutdownHook(new Thread(RandomTodoCommands::clearTodos));
         while (true) {
             commands.get(RandomUtils.nextInt(0, 4)).run();
             Thread.sleep(RandomUtils.nextInt(50, 500));
         }
+    }
+
+    private static void clearTodos() {
+        log.info("Clearing todos");
+        initializeTodoCollection().drop();
     }
 }
