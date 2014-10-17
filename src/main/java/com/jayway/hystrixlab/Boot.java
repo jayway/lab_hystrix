@@ -6,6 +6,7 @@ import com.jayway.hystrixlab.repository.TodoRepository;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -18,9 +19,10 @@ import java.net.UnknownHostException;
 
 public class Boot {
     private static final Logger log = LoggerFactory.getLogger(Boot.class);
+    private static final int DEFAULT_PORT = 8080;
 
     public static void main(String[] args) throws Exception {
-        HystrixLabServer hystrixLabServer = new HystrixLabServer();
+        HystrixLabServer hystrixLabServer = new HystrixLabServer(DEFAULT_PORT);
         try {
             Server server = hystrixLabServer.startServer();
             server.join();
@@ -30,17 +32,23 @@ public class Boot {
     }
 
 
-    static class HystrixLabServer {
+    public static class HystrixLabServer {
         private final Server server;
-        private final DB mongoDB;
+        private final TodoRepository todoRepository;
 
-        HystrixLabServer() {
-            this.server = new Server();
+        public HystrixLabServer(int port) {
+            this.server = new Server(port);
+            DB mongoDB;
             try {
                 mongoDB = new MongoClient("localhost").getDB("hystrixLab");
             } catch (UnknownHostException e) {
                 throw new RuntimeException(e);
             }
+            todoRepository = new TodoRepository(mongoDB.getCollection("todos"));
+        }
+
+        public int getPort() {
+            return ((ServerConnector) server.getConnectors()[0]).getLocalPort();
         }
 
         public Server startServer() {
@@ -53,6 +61,7 @@ public class Boot {
             server.setHandler(collection);
             try {
                 server.start();
+                log.info("{} started on port {}", HystrixLabServer.class.getSimpleName(), getPort());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -72,15 +81,18 @@ public class Boot {
 
         private ServletContextHandler createContextHandler() {
             ResourceConfig resourceConfig = new ResourceConfig();
-            TodoRepository todoRepository = new TodoRepository(mongoDB.getCollection("todos"));
             resourceConfig.register(new TodoResource(todoRepository));
             resourceConfig.register(new GlobalExceptionMapper());
 
-            ServletContextHandler externalContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
+            ServletContextHandler externalContext = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
             ServletHolder servletHolder = new ServletHolder(new ServletContainer(resourceConfig));
-            externalContext.addServlet(servletHolder, "/");
+            externalContext.addServlet(servletHolder, "/*");
             return externalContext;
 
+        }
+
+        public TodoRepository todoRepository() {
+            return todoRepository;
         }
     }
 

@@ -3,11 +3,13 @@ package com.jayway.hystrixlab.http;
 import com.jayway.hystrixlab.repository.TodoRepository;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Path("/todos")
+@Produces(MediaType.APPLICATION_JSON)
 public class TodoResource {
 
     private final TodoRepository todoRepository;

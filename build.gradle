@@ -39,11 +39,11 @@ project.ext {
 dependencies {
   compile "org.glassfish.jersey.containers:jersey-container-servlet-core:${jerseyVersion}"
   compile "org.glassfish.jersey.core:jersey-server:${jerseyVersion}"
+  compile "org.glassfish.jersey.media:jersey-media-json-jackson:${jerseyVersion}"
   compile "org.eclipse.jetty:jetty-server:${jettyVersion}"
   compile "org.eclipse.jetty:jetty-webapp:${jettyVersion}"
   compile 'javax.servlet:javax.servlet-api:3.1.0'
   compile 'org.mongodb:mongo-java-driver:2.12.4'
-  compile 'org.jooq:jool:0.9.2'
   compile 'ch.qos.logback:logback-core:1.1.2'
   compile 'ch.qos.logback:logback-classic:1.1.2'
 

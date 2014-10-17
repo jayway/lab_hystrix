@@ -22,6 +22,7 @@ public class TodoRepository {
 
     public Map<String, Object> create(Map<String, Object> todo) {
         BasicDBObject dbObject = new BasicDBObject(todo);
+        dbObject.put(ID, new ObjectId().toHexString());
         todos.insert(dbObject);
         return findById(dbObject.getString(ID));
     }
@@ -29,7 +30,7 @@ public class TodoRepository {
     @SuppressWarnings("unchecked")
     public Map<String, Object> findById(String id) {
         BasicDBObject query = new BasicDBObject();
-        query.put(ID, new ObjectId(id));
+        query.put(ID, id);
         DBObject dbObj = todos.findOne(query);
         if (dbObj == null) {
             return null;
@@ -39,13 +40,26 @@ public class TodoRepository {
 
     public void delete(String id) {
         BasicDBObject query = new BasicDBObject();
-        query.put(ID, new ObjectId(id));
+        query.put(ID, new ObjectId(id).toHexString());
         todos.remove(query);
     }
 
+    @SuppressWarnings("unchecked")
     public List<Map<String, Object>> findAll() {
         try (DBCursor cursor = todos.find()) {
-            return StreamSupport.stream(cursor.spliterator(), false).map(DBObject::toMap).collect(Collectors.toList());
+            return StreamSupport.stream(cursor.spliterator(), false).map(DBObject::toMap).map(todo -> (Map<String, Object>) todo).collect(Collectors.toList());
         }
+    }
+
+    public void clear() {
+        todos.drop();
+    }
+
+    public long count() {
+        return todos.count();
+    }
+
+    public boolean hasTodo(String id) {
+        return findById(id) != null;
     }
 }
