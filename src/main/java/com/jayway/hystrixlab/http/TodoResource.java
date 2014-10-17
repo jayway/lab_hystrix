@@ -34,14 +34,14 @@ public class TodoResource {
         return new MongoHystrixCommand<Map<String, Object>>(CREATE,
                 () -> todoRepository.create(new HashMap<String, Object>() {{
                     put("todo", todo);
-                }}), Collections::emptyMap).run();
+                }}), Collections::emptyMap).execute();
     }
 
     @GET
     @Path("/{id}")
     public Map<String, Object> findById(@PathParam("id") String id) throws Exception {
         log.trace("Finding todo with id {}", id);
-        return new MongoHystrixCommand<Map<String, Object>>(FIND_BY_ID, () -> todoRepository.findById(id), Collections::emptyMap).run();
+        return new MongoHystrixCommand<Map<String, Object>>(FIND_BY_ID, () -> todoRepository.findById(id), Collections::emptyMap).execute();
     }
 
     @DELETE
@@ -51,13 +51,13 @@ public class TodoResource {
         new MongoHystrixCommand<Void>(DELETE, () -> {
             todoRepository.delete(id);
             return null;
-        }, () -> null).run();
+        }, () -> null).execute();
     }
 
     @GET
     public List<Map<String, Object>> findAll() throws Exception {
         log.trace("Finding all todos");
-        return new MongoHystrixCommand<List<Map<String, Object>>>(FIND_ALL, todoRepository::findAll, Collections::emptyList).run();
+        return new MongoHystrixCommand<List<Map<String, Object>>>(FIND_ALL, todoRepository::findAll, Collections::emptyList).execute();
     }
 
     enum CommandKey {
