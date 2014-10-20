@@ -6,7 +6,6 @@ import com.jayway.hystrixlab.repository.TodoRepository;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
-import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerCollection;
@@ -101,9 +100,6 @@ public class Boot {
             ServletContextHandler ctx = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
             ServletHolder servletHolder = new ServletHolder(new ServletContainer(resourceConfig));
             ctx.addServlet(servletHolder, "/*");
-
-            ServletHolder hystrixHolder = new ServletHolder(new HystrixMetricsStreamServlet());
-            ctx.addServlet(hystrixHolder, "/hystrix.stream");
             return ctx;
 
         }
