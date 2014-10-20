@@ -60,7 +60,7 @@ for storing and retrieving todos.
     After you've implemented the Hystrix layer make sure to run `./gradlew test` to see that the tests are still passing.
 2. Now that we have Hystrix protecting the `TodoRepository` we want statistics. Expose the statistics by 
    <a href="https://github.com/Netflix/Hystrix/tree/master/hystrix-contrib/hystrix-metrics-event-stream#installation">installing</a> the 
-   <a href="https://github.com/Netflix/Hystrix/tree/master/hystrix-contrib/hystrix-metrics-event-stream>hystrix-metrics-event-stream</a> module to
+   <a href="https://github.com/Netflix/Hystrix/tree/master/hystrix-contrib/hystrix-metrics-event-stream">hystrix-metrics-event-stream</a> module to
    `com.jayway.hystrixlab.Boot` (don't forget to restart the server afterwards).
 3. Start the Hystrix Dashboard (if you've not done so already) and point it to your hystrix event stream, for example `http://localhost:8080/hystrix.stream`.
    Use something like RestClient, Postman or "test RESTful Web Service" (if you're using IntelliJ) to send commands to the `TodoResource`. 
