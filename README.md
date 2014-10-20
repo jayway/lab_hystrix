@@ -82,3 +82,4 @@ for storing and retrieving todos.
 8. Revisit what you did in step 4 but this time change so that `com.jayway.hystrixlab.repository.RandomTodoCommands` goes through nginx.
 9. Create an alert system that monitors the Turbine stream (same stream that you pointed out in the dashboard) and trigger notifications when a circuit breaker is opened or closed. 
    Preferably use RxJava or if you want to be really fancy use Clojure channels and transducers.
+10. Make sure that the alert system works both when using the Turbine stream and when pointing to a single Hystrix instance stream directly. 
