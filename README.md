@@ -71,7 +71,7 @@ for storing and retrieving todos.
     4. After a while turn on MongoDB again and see what happens in the Hystrix Dashboard. Is everything working the same was as before?
 5. Now we're going to create small cluster of two todo applications and we going to use nginx as a round robin load balancer to distribute requests
    between our servers.
-    1. Start two instance of todo application on different ports:
+    1. Start two instance of the todo application on different ports:
         1. `./gradlew clean && ./gradlew shadowJar` 
         2. `java -jar build/libs/hystrix-lab-1.0-all.jar -p 8080`
         3. `java -jar build/libs/hystrix-lab-1.0-all.jar -p 8081         
