@@ -26,7 +26,7 @@ Prerequisites
     > Building > :hystrix-dashboard:jettyRun > Running at http://localost:7979/hystrix-dashboard
     ```
 6. Install Nginx (for example `brew install nginx`) (you can defer this until you reach section 5 in the lab instructions).
-7. Install <a href="https://github.com/Netflix/Turbine>Turbine</a> (you can defer this until you reach section 6 in the lab instructions):
+7. Install <a href="https://github.com/Netflix/Turbine">Turbine</a> (you can defer this until you reach section 6 in the lab instructions):
     ```bash
     $ git clone git@github.com:Netflix/Turbine.git
     $ cd Turbine
