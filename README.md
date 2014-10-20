@@ -1,8 +1,10 @@
 Hystrix Lab
 ===========
 
-Originally created for ca_java competence day  
+Originally created for ca_java competence day
+  
 Members: Johan Haleby
+
 Tags: ca_java
 
 Prerequisites
