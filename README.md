@@ -13,9 +13,9 @@ Prerequisites
 1. Install the following: 
     * Java 8 
     * MongoDB (for example `brew install mongodb`).
-2. Start MongoDB
-3. Clone this repository and build the todo application by running `./gradlew build`
-4. Open the project in your favorite IDE
+2. Start MongoDB.
+3. Clone this repository and build the todo application by running `./gradlew build`.
+4. Open the project in your favorite IDE.
 5. Download and start the Hystrix dashboard:
     ```bash
     $ git clone https://github.com/Netflix/Hystrix.git
