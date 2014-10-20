@@ -79,6 +79,6 @@ for storing and retrieving todos.
     3. Verify that it works!
 6. <a href="https://github.com/Netflix/Turbine/wiki/Getting-Started-(1.x)#configure-turbine">Configure</a> a Turbine cluster with the two instances. Don't use anything fancy such as Eureka, settle for the pure config option.
 7. Point your Hystrix Dashboard to the Turbine endpoint that should be aggregating the streams and send some commands to the ngnix load balancer. The graph should indicate that the cluster size is 2.
-8. Redo what you did in step 4 but this time change so that `com.jayway.hystrixlab.repository.RandomTodoCommands` goes through nginx.
+8. Revisit what you did in step 4 but this time change so that `com.jayway.hystrixlab.repository.RandomTodoCommands` goes through nginx.
 9. Create an alert system that monitors the Turbine stream (same stream that you pointed out in the dashboard) and trigger notifications when a circuit breaker is opened or closed. 
    Preferably use RxJava or if you want to be really fancy use Clojure channels and transducers.
