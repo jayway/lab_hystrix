@@ -7,8 +7,15 @@ Members: Johan Haleby
 
 Tags: ca_java
 
+Introduction
+------------
+The purpose of this lab is to get basic acquaintance with <a href="https://github.com/Netflix/Hystrix">Hystrix</a> from Netflix. 
+It's encouraged to experiment with various <a href="https://github.com/Netflix/Hystrix/wiki/Configuration">configurations</a>, 
+<a href="https://github.com/Netflix/Hystrix/wiki/How-To-Use#Common-Patterns">patterns</a> and <a href="https://github.com/Netflix/Hystrix/wiki">other features</a>
+(such as semaphores instead of threads, request collapsing etc).
+
 Prerequisites
-=============
+-------------
 
 1. Install the following: 
     * Java 8 
@@ -39,12 +46,7 @@ Prerequisites
 To start the todo application either run the main method in `com.jayway.hystrixlab.Boot` from your IDE or run `./gradlew shadowJar && java -jar build/libs/hystrix-lab-1.0-all.jar`.    
 
 Lab Instructions
-================
-The purpose of this lab is to get basic acquaintance with <a href="https://github.com/Netflix/Hystrix">Hystrix</a> from Netflix. 
-It's encouraged to experiment with various <a href="https://github.com/Netflix/Hystrix/wiki/Configuration">configurations</a>, 
-<a href="https://github.com/Netflix/Hystrix/wiki/How-To-Use#Common-Patterns">patterns</a> and <a href="https://github.com/Netflix/Hystrix/wiki">other features</a>
-(such as semaphores instead of threads, request collapsing etc).
-
+----------------
 The code is an overly simplistic TODO application that stores todos in MongoDB. It has a simple HTTP interface 
 (<a href="https://github.com/jayway/lab_hystrix/blob/master/src/main/java/com/jayway/hystrixlab/http/TodoResource.java">TodoResource</a>) and
 a repository (<a href="https://github.com/jayway/lab_hystrix/blob/master/src/main/java/com/jayway/hystrixlab/repository/TodoRepository.java">TodoRepository</a>)
