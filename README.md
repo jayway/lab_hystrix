@@ -25,7 +25,7 @@ Prerequisites
     ```bsh
     > Building > :hystrix-dashboard:jettyRun > Running at http://localost:7979/hystrix-dashboard
     ```
-6. Install Nginx (for example `brew install nginx) (you can defer this until you reach section 5 in the lab instructions).
+6. Install Nginx (for example `brew install nginx`) (you can defer this until you reach section 5 in the lab instructions).
 7. Install <a href="https://github.com/Netflix/Turbine>Turbine</a> (you can defer this until you reach section 6 in the lab instructions):
     ```bash
     $ git clone git@github.com:Netflix/Turbine.git
@@ -70,7 +70,7 @@ for storing and retrieving todos.
     1. Start two instance of todo application on different ports:
         1. `./gradlew clean && ./gradlew shadowJar` 
         2. `java -jar build/libs/hystrix-lab-1.0-all.jar -p 8080`
-        3. `java -jar build/libs/hystrix-lab-1.0-all.jar -p 8081`         
+        3. `java -jar build/libs/hystrix-lab-1.0-all.jar -p 8081         
     2. Configure nginx to load balance between these two instances (see <a href="http://nginx.org/en/docs/http/load_balancing.html">docs</a>).
     3. Verify that it works!
 6. <a href="https://github.com/Netflix/Turbine/wiki/Getting-Started-(1.x)#configure-turbine">Configure</a> a Turbine cluster with the two instances. Don't use anything fancy such as Eureka, settle for the pure config option.
