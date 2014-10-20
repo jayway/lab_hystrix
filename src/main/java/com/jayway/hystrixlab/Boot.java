@@ -25,7 +25,14 @@ public class Boot {
     private static final int DEFAULT_PORT = 8080;
 
     public static void main(String[] args) throws Exception {
-        HystrixLabServer hystrixLabServer = new HystrixLabServer(DEFAULT_PORT);
+        int port = DEFAULT_PORT;
+        if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("--port") || args[0].equalsIgnoreCase("-p")) {
+                port = Integer.parseInt(args[1]);
+            }
+        }
+
+        HystrixLabServer hystrixLabServer = new HystrixLabServer(port);
         try {
             Server server = hystrixLabServer.startServer();
             server.join();
