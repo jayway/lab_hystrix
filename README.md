@@ -74,7 +74,7 @@ for storing and retrieving todos.
     1. Start two instance of the todo application on different ports:
         1. `./gradlew clean && ./gradlew shadowJar` 
         2. `java -jar build/libs/hystrix-lab-1.0-all.jar -p 8080`
-        3. `java -jar build/libs/hystrix-lab-1.0-all.jar -p 8081         
+        3. `java -jar build/libs/hystrix-lab-1.0-all.jar -p 8081`         
     2. Configure nginx to load balance between these two instances (see <a href="http://nginx.org/en/docs/http/load_balancing.html">docs</a>).
     3. Verify that it works!
 6. <a href="https://github.com/Netflix/Turbine/wiki/Getting-Started-(1.x)#configure-turbine">Configure</a> a Turbine cluster with the two instances. Don't use anything fancy such as Eureka, settle for the pure config option.
